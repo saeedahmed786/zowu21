@@ -1,0 +1,22 @@
+.Userpage .user-info img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;   
+}
+
+.Userpage .user-info h6 {
+    margin-top: 15px;
+}
+
+.Userpage .user-info .desc {
+    max-width: 600px;
+    margin: 0px auto;
+    background-color: rgba(236, 125, 84, .7);
+    border-radius: 6px;
+    padding: 10px;
+}
+
+img {
+    max-width: 100%;
+  }
+  

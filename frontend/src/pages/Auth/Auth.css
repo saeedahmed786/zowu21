@@ -1,0 +1,197 @@
+.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh !important;
+}
+
+.auth .auth-inner {
+    background-color: white;
+    border-radius: 10px;
+    min-width: 341px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px 2px rgb(64 60 67 / 16%);
+}
+
+.auth .auth-inner .header {
+    background-color: darkcyan;
+    padding: 21px;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.auth .auth-inner .header a {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.auth .login-providers .item {
+    margin-top: 15px;
+}
+
+.auth .login-providers .item .kep-login-facebook {
+    padding: 8px 6px;
+    font-size: 14px;
+    font-weight: normal;
+    text-transform: capitalize;
+    letter-spacing: .6px;
+}
+
+.auth .login-providers .item .apple-btn {
+    background-color: black;
+    border-radius: 0px !important;
+    color: white;
+    padding: 0px 5px;
+}
+
+.auth .login-providers .item .apple-btn img {
+    width: 41px;
+    height: 41px;
+    object-fit: cover;
+}
+
+.auth .login-providers .item .apple-btn {
+    background-color: black;
+    border-radius: 4px;
+    color: white;
+}
+.auth .login-providers .item .apple-btn {
+    background-color: black;
+    border-radius: 4px;
+    color: white;
+}
+
+.auth .anticon  {
+    border: none;
+    font-size: 23px;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.auth .btn-file {
+    position: relative;
+    overflow: hidden;
+  }
+ .auth .btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+  }
+.auth .ant-input-affix-wrapper-sm {
+    border: none !important;
+    background: #f7f7f7 !important;
+}
+
+.auth .ant-input-affix-wrapper-sm {
+    padding: 2px 7px!important;
+    padding-left: 8px;
+    border-radius: 28px;
+}
+
+.auth .ant-input{
+    border: none;
+    background: #f7f7f7;
+}
+
+
+ .auth .floating-label-group .anticon {
+        font-size: 15px;
+ }
+
+ .auth .floating-label-group .ant-input-prefix {
+        background: #FFFFFF !important;
+        border-radius: 23px;
+        padding-left: 0px;
+ }
+
+ .auth .ant-form-item {
+     margin-bottom: 14px;
+ }
+ 
+ .auth .ant-input-affix-wrapper {
+     border: 1px solid transparent;
+     border-radius: 20px;
+ }
+ .auth .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+    border-color: #40a9ff;
+    border-right-width: 1px !important;
+    z-index: 1;
+}
+.auth .ant-input-affix-wrapper:hover {
+    border-color: #40a9ff;
+    border-right-width: 1px !important;
+}
+.auth .ant-input-affix-wrapper:hover {
+    border: none !important;
+}
+
+.auth .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+    border : 1px solid darkcyan !important;
+    z-index: 1;
+}
+
+.auth .ant-input-affix-wrapper-focused {
+    border: 1px solid darkcyan !important;
+    box-shadow: none !important;
+}
+
+.auth .ant-input-affix-wrapper:focus {
+    border: 1px solid darkcyan !important;
+    box-shadow: none !important;
+}
+
+
+.auth .form-check-input:checked {
+    background-color: darkcyan;
+    border-color: darkcyan;
+    box-shadow: none;
+}
+
+.auth .auth-inner .ant-form-item-has-feedback.ant-form-item-has-success .ant-form-item-children-icon, 
+.auth .auth-inner .ant-form-item-has-feedback.ant-form-item-has-warning .ant-form-item-children-icon, 
+.auth .auth-inner .ant-form-item-has-feedback.ant-form-item-has-error .ant-form-item-children-icon, 
+.auth .auth-inner .ant-form-item-has-feedback.ant-form-item-is-validating .ant-form-item-children-icon {
+    top: 30% !important;
+    width: 40px !important;
+}
+
+.auth a.pass {
+    color: darkcyan;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+
+.auth .auth-inner .submit-btn-container .btn {
+    background-color: darkcyan;
+    color: white;
+}
+
+.auth .auth-inner h4 {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.auth .auth-inner .update-password .ant-input {
+    background-color: white !important;
+}
+
+.auth-inner .ant-btn {
+    height: auto !important;
+}
+
+.auth .terms a {
+   text-decoration: underline;
+}

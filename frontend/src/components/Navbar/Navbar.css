@@ -1,0 +1,64 @@
+.main-nav {
+  position: relative;
+  /* height: 86px; */
+}
+
+nav {
+  /* background-color: #fafafa; */
+  padding: 0px 10px;
+  /* box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%); */
+  z-index: 1000;
+}
+nav .navbar-brand {
+    color: rgb(31 41 55 / 1);
+    font-size: 32px;
+    font-weight: 600;
+}
+
+nav .navbar-brand:hover {
+    color: rgb(31 41 55 / 1);
+    font-size: 32px;
+    font-weight: 600;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+}
+
+nav ul li a .anticon {
+  font-size: 36px;
+  color: black;
+}
+
+nav ul li .ant-input-affix-wrapper-lg {
+  border-radius: 23px;
+  background-color: darkcyan;
+}
+
+nav ul li .ant-input-affix-wrapper-lg i {
+  color: white !important;
+  margin-right: 6px;
+}
+
+nav ul li .ant-input-affix-wrapper-lg input {
+  background-color: darkcyan;
+  color: white;
+}
+
+nav ul li .ant-input-affix-wrapper-lg input::placeholder {
+  color: white;
+}
+
+nav ul li.search .btn {
+  background-color: darkcyan;
+  border-radius: 50%;
+  width: 43px;
+  height: 43px;
+  margin-left: 10px;
+  color: white;
+}
+
+nav ul li.search .btn .anticon {
+  color: white;
+}
