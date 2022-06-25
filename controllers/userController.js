@@ -7,6 +7,7 @@ const cloudinary = require('../middlewares/cloudinary');
 const cloudinaryCon = require('../middlewares/cloudinaryConfig');
 const { OAuth2Client } = require('google-auth-library');
 const googleClient = new OAuth2Client(config.googleClient);
+const fetch = require('node-fetch')
 
 exports.getAllUsers = async (req, res) => {
     const users = await User.find().sort({ updatedAt: -1 });
@@ -111,7 +112,6 @@ exports.googleLogin = async (req, res) => {
             console.log(email);
             if (email_verified) {
                 User.findOne({ email }).exec((err, user) => {
-                    console.log(user);
                     if (user) {
                         const payload = {
                             user: {
@@ -123,17 +123,22 @@ exports.googleLogin = async (req, res) => {
                         const token = jwt.sign(payload, config.jwtSecret, {
                             expiresIn: '7d'
                         });
-                        const { _id, email, role, name } = user;
+                        const { _id, email, role, fullName, image } = user;
                         return res.json({
+                            _id,
+                            role,
+                            fullName,
+                            email,
+                            image,
                             token,
-                            _id, email, role, name
+                            successMessage: 'Logged In Successfully',
                         });
                     } else {
                         let password = email + config.jwtSecret;
                         let user = new User({ fullName: name, email, password, username: email, image: { url: picture } });
                         user.save((err, data) => {
                             if (err) {
-                                console.log('ERROR GOOGLE LOGIN ON USER SAVE', err); 
+                                console.log('ERROR GOOGLE LOGIN ON USER SAVE', err);
                                 return res.status(400).json({
                                     error: 'User signup failed with google'
                                 });
@@ -168,7 +173,7 @@ exports.googleLogin = async (req, res) => {
 
 exports.facebookLogin = async (req, res) => {
     const { userID, accessToken } = req.body;
-    const url = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`;
+    const url = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email,picture&access_token=${accessToken}`;
 
     return (
         fetch(url, {
@@ -176,26 +181,27 @@ exports.facebookLogin = async (req, res) => {
         })
             .then(response => response.json())
             .then(response => {
-                const { email, name } = response;
+                console.log(response)
+                const { email, name, picture } = response;
                 User.findOne({ email }).exec((err, user) => {
                     if (user) {
                         const token = jwt.sign({ _id: user._id, role: user.role }, config.jwtSecret, {
                             expiresIn: '7d'
                         });
-                        const { _id, fullName, role, username, email, picture } = user;
+                        const { _id, fullName, role, username, email, image } = user;
                         return res.json({
                             _id,
                             role,
                             fullName,
                             username,
                             email,
-                            picture,
+                            image,
                             token,
                             successMessage: 'Logged In Successfully',
                         });
                     } else {
                         let password = email + config.jwtSecret;
-                        user = new User({ name, email, password });
+                        user = new User({ fullName: name, email, password, username: email, image: { url: picture?.data?.url } });
                         user.save((err, data) => {
                             if (err) {
                                 console.log('ERROR FACEBOOK LOGIN ON USER SAVE', err);
@@ -207,10 +213,16 @@ exports.facebookLogin = async (req, res) => {
                                 { _id: data._id, role: data.role },
                                 config.jwtSecret
                             );
-                            const { _id, email, name, role } = data;
+                            const { _id, email, fullName, role, image, username } = data;
                             return res.json({
+                                _id,
+                                role,
+                                fullName,
+                                username,
+                                email,
+                                image,
                                 token,
-                                user: { _id, email, name, role }
+                                successMessage: 'Logged In Successfully',
                             });
                         });
                     }
@@ -225,21 +237,18 @@ exports.facebookLogin = async (req, res) => {
 }
 
 exports.updateUserProfile = async (req, res) => {
-    console.log(req.body)
     const findUser = await User.findOne({ _id: req.params.id });
     if (findUser) {
         if (req.file) {
             const imgUrl = findUser.picture?.cloudinary_id;
             imgUrl && await cloudinaryCon.uploader.destroy(imgUrl);
             const { path } = req.file;
-            const uploading = await cloudinary.uploads(path, 'Real-estate/Users');
+            const uploading = await cloudinary.uploads(path, 'Zowu/User');
             fs.unlinkSync(path);
             findUser.fullName = req.body.fullName;
-            findUser.city = req.body.city;
-            findUser.country = req.body.country;
-            findUser.address = req.body.address;
-            findUser.creditScore = req.body.creditScore;
-            findUser.picture = uploading;
+            findUser.username = req.body.username;
+            findUser.description = req.body.description;
+            findUser.image = uploading;
 
             const saveUser = await findUser.save();
             if (saveUser) {
@@ -248,12 +257,10 @@ exports.updateUserProfile = async (req, res) => {
                 res.status(400).json({ errorMessage: 'User could not be Updated.' })
             )
         }
-        else if (req.body.image) {
+        else {
             findUser.fullName = req.body.fullName;
-            findUser.city = req.body.city;
-            findUser.country = req.body.country;
-            findUser.address = req.body.address;
-            findUser.creditScore = req.body.creditScore;
+            findUser.username = req.body.username;
+            findUser.description = req.body.description;
 
             const saveUser = await findUser.save();
             if (saveUser) {

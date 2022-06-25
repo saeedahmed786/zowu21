@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { Post } from '../../components/Post/Post'
-import { UploadPost } from '../../components/UploadPost/UploadPost'
 import './UserPage.css'
 import axios from 'axios'
 import { ErrorMessage } from '../../components/Messages/Messages';
-import { isAuthenticated } from '../../components/auth/auth'
+import { isAuthenticated, logout } from '../../components/auth/auth'
+import { Navbar } from '../../components/Navbar/Navbar'
+import { UpdateProfile } from '../../components/UpdateProfile'
+import { LogoutOutlined } from '@ant-design/icons';
 
-export const Userpage = () => {
-    const user = isAuthenticated();
+export const Userpage = (props) => {
     const [data, setData] = useState({});
+    const [user, setUser] = useState({});
 
     const getData = async () => {
-        await axios.get(`/api/post/user/${user._id}`).then(res => {
+        await axios.get(`/api/post/user/${isAuthenticated()._id}`).then(res => {
             console.log(res.data)
             if (res.status === 200) {
                 setData(res.data)
@@ -21,8 +23,19 @@ export const Userpage = () => {
         })
     }
 
+    const getUser = async () => {
+        await axios.get(`/api/users/get/${isAuthenticated()._id}`).then(res => {
+            if (res.status === 200) {
+                setUser(res.data)
+            } else {
+                ErrorMessage(res.data.errorMessage);
+            }
+        })
+    }
+
 
     useEffect(() => {
+        getUser();
         getData();
 
         return () => {
@@ -35,27 +48,52 @@ export const Userpage = () => {
         getData();
     }
 
+    const updateUserData = () => {
+        getUser();
+    }
+
+
+    const searchHanlder = async (text) => {
+        text ?
+            setData(data.filter(d => d.description?.toLowerCase()?.includes(text.toLowerCase())))
+            :
+            getData();
+    }
+
 
     return (
-        <div className='Userpage'>
-            <UploadPost update={update} />
-            <div className='row m-5 text-center'>
-                <div className='col-md-12 user-info mb-5'>
-                    <img src={user?.image?.url ? user.image.url : '/assets/user.png'} alt='Profile Picture' />
-                    <h6>@{user.username}</h6>
-                    <h3>{user.fullName}</h3>
-                    <p className='desc'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus a malesuada magna, non volutpat ex. Nullam dictum eget nisi eget tristique. Aenean eget enim tristique, rhoncus sem id, rutrum augue. Donec cursus at erat ac imperdiet. Vestibulum faucibus lacus quam, vitae ullamcorper leo viverra sed.</p>
+        <>
+            <Navbar searchHanlder={searchHanlder} />
+            <div className='Userpage'>
+                <div className='UploadPost'>
+                    <div className='add-post-btn'>
+                        <button className='btn' onClick={() => props.history.push('/add-post')}>Add New Post!</button>
+                    </div>
                 </div>
-                {
-                    data && data.length > 0 && data.map(post => {
-                        return (
-                            <div className='col-md-3 mb-5' key={post._id}>
-                                <Post post={post} update={update} />
-                            </div>
-                        )
-                    })
-                }
+                <div className='row m-5 text-center'>
+                    <div className='col-md-12 user-info mb-5'>
+                        <img src={user?.image?.url ? user.image.url : '/assets/user.png'} alt='Profile Picture' />
+                        <h6>@{user.username}</h6>
+                        <h3>{user.fullName}</h3>
+                        <p className='desc'>{user?.description}</p>
+                        <div className='my-3'>
+                            <UpdateProfile user={user} update={updateUserData} />
+                        </div>
+                        <div className='my-3'>
+                            <button className='btn' onClick={() => logout(() => { props.history.push('/login') })}>Logout</button>
+                        </div>
+                    </div>
+                    {
+                        data && data.length > 0 && data.map(post => {
+                            return (
+                                <div className='col-md-3 mb-5' key={post._id}>
+                                    <Post post={post} update={update} />
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
-        </div>
+        </>
     )
 }

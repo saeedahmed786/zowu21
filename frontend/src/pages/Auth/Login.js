@@ -76,7 +76,7 @@ export const Login = (props) => {
 
   //Facebook Login
   const responseFacebook = async (response) => {
-    await axios.post(`/api/users/google-login`, { userID: response.userID, accessToken: response.accessToken }).then(res => {
+    await axios.post(`/api/users/facebook-login`, { userID: response.userID, accessToken: response.accessToken }).then(res => {
       if (res.status === 200) {
         console.log(res);
         SuccessMessage(res.data.successMessage);
@@ -128,7 +128,7 @@ export const Login = (props) => {
                     </div>
                     <div className='item'>
                       <FacebookLogin
-                        appId='781073645807938'
+                        appId='190485236351543'
                         autoLoad={false}
                         // autoLoad={true}
                         icon="fa-facebook"

@@ -1,6 +1,6 @@
 const express = require('express');
 const upload = require('../middlewares/multer');
-const { signUp, login, getAllUsers, getUserById, updateUserProfile, googleLogin, facebookLogin } = require('../controllers/userController');
+const { signUp, login, getUserById, updateUserProfile, googleLogin, facebookLogin } = require('../controllers/userController');
 const { AuthenticatorJWT } = require('../middlewares/authenticator');
 
 const router = express.Router();

@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     description: {
-        type: String
+        type: String,
+        default: 'Add Description'
     },
     image: {
         type: Object

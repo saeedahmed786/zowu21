@@ -1,11 +1,12 @@
 const express = require('express');
 const upload = require('../middlewares/multer');
 const { AuthenticatorJWT } = require('../middlewares/authenticator');
-const { getAllPosts, getAllPostsByUserId, getPostById, uploadPost, updatePost, deletePost, addComments, deletePostComments, getAllCommentsByPostId, addLike, removeLike, addView } = require('../controllers/postController');
+const { getAllPosts, getAllPostsByUserId, getPostById, uploadPost, updatePost, deletePost, addComments, deletePostComments, getAllCommentsByPostId, addLike, removeLike, addView, searchPost } = require('../controllers/postController');
 
 const router = express.Router();
 
 router.get('/get', getAllPosts);
+router.post('/search', searchPost);
 router.get('/user/:id', getAllPostsByUserId);
 router.get('/get/:id', getPostById);
 router.post('/upload', upload.single('file'), AuthenticatorJWT, uploadPost);

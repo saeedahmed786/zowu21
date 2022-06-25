@@ -1,10 +1,19 @@
 const cloudinary = require('../middlewares/cloudinary');
 const cloudinaryCon = require('../middlewares/cloudinary');
-const Post = require('../Models/postModel'); 
+const Post = require('../Models/postModel');
 var fs = require('fs');
- 
-exports.getAllPosts = async (req, res) => {
-  const posts = await Post.find().populate('user comments.user').exec();
+
+exports.getAllPosts = async (req, res) => { 
+  const posts = await Post.find().populate('user comments.user').sort({ createdAt: -1 }).exec();
+  if (posts) {
+    res.status(200).send(posts);
+  } else {
+    res.status(404).json({ errorMessage: 'No Posts found!' });
+  }
+}
+
+exports.searchPost = async (req, res) => {
+  const posts = await Post.find({ description: req.body.searchText }).populate('user comments.user').sort({ createdAt: -1 }).exec();
   if (posts) {
     res.status(200).send(posts);
   } else {
@@ -14,7 +23,7 @@ exports.getAllPosts = async (req, res) => {
 
 
 exports.getAllPostsByUserId = async (req, res) => {
-  const posts = await Post.find({ user: req.params.id }).populate('user comments.user').exec();
+  const posts = await Post.find({ user: req.params.id }).sort({ createdAt: -1 }).populate('user comments.user').exec();
   if (posts) {
     res.status(200).send(posts);
   } else {
@@ -37,6 +46,7 @@ exports.uploadPost = async (req, res) => {
   fs.unlinkSync(path);
   const post = new Post({
     description: req.body.description,
+    category: req.body.category,
     file: newPath,
     user: req.user._id
   });

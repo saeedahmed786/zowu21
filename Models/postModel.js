@@ -14,6 +14,10 @@ const postSchema = new mongoonse.Schema({
         ref: 'User',
         required: true
     },
+    category: {
+        type: String,
+        required: true
+    },
     views: {
         type: Array,
         default: []

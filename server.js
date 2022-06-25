@@ -9,7 +9,7 @@ const app = express();
 
 /******************************************MiddleWares  ********************************************/
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: '200mb' }));
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use('/api/users', userRoutes);
 app.use('/api/post', postRoutes);

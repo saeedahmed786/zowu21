@@ -7,6 +7,7 @@ import { isAuthenticated } from '../auth/auth'
 import { ErrorMessage, SuccessMessage } from '../Messages/Messages'
 import axios from 'axios'
 import { Modal } from 'antd'
+import { Video } from './Video'
 
 export const Post = ({ post, update }) => {
     const history = useHistory();
@@ -68,7 +69,6 @@ export const Post = ({ post, update }) => {
     }
 
     const addView = async (e) => {
-        console.log('jhkw')
         e.stopPropagation();
         isAuthenticated() &&
             post?.views && post?.views.filter(f => f == isAuthenticated()._id)?.length === 0 &&
@@ -78,7 +78,7 @@ export const Post = ({ post, update }) => {
                 }
             }).then(res => {
                 if (res.status === 200) {
-                    SuccessMessage(res.data.successMessage);
+                    // SuccessMessage(res.data.successMessage);
                     update();
                 } else {
                     ErrorMessage(res.data.errorMessage);
@@ -86,7 +86,8 @@ export const Post = ({ post, update }) => {
             })
     }
 
-    const submitHandler = async () => {
+    const submitCommentHandler = async (e) => {
+        e.preventDefault();
         isAuthenticated() && isAuthenticated().role === 0 ?
             await axios.post(`/api/post/add/comment/${post._id}`, { text: comment }, {
                 headers: {
@@ -96,6 +97,7 @@ export const Post = ({ post, update }) => {
                 if (res.status === 200) {
                     SuccessMessage(res.data.successMessage);
                     setComment('');
+                    setIsModalVisible(false);
                     update();
                 } else {
                     ErrorMessage(res.data.errorMessage);
@@ -111,7 +113,7 @@ export const Post = ({ post, update }) => {
                 <div className="card">
                     {
                         post.file?.url.substring(post.file?.url.length - 3, post.file?.url.length) === 'mp4' ?
-                            <video className="card-img-top" src={post.file?.url} autoPlay alt='Post Video' />
+                            <video controls className="card-img-top" src={post.file?.url} autoPlay alt='Post Video' />
                             :
                             <img className="card-img-top" src={post.file?.url} alt="Post Photo" />
                     }
@@ -129,8 +131,7 @@ export const Post = ({ post, update }) => {
                                             <i class="fa-solid fa-xmark" onClick={hideCommentsHandler}></i>
                                         </div>
                                     </div>
-                                    <div className='description text-start'>
-                                        {post.description}
+                                    <div className='description text-start' dangerouslySetInnerHTML={{ __html: post.description }}>
                                     </div>
                                     {
                                         post?.comments && post?.comments.length > 0 && post.comments.map(c => {
@@ -170,14 +171,14 @@ export const Post = ({ post, update }) => {
                     </div>
                 </div>
                 <Modal zIndex={1000} footer={false} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    <div className='postComments'>
+                    <form className='postComments' onSubmit={submitCommentHandler}>
                         <div className="mt-5">
-                            <textarea value={comment} className="form-control" placeholder="Leave a comment" onChange={(e) => setComment(e.target.value)}></textarea>
+                            <textarea required value={comment} className="form-control" placeholder="Leave a comment" onChange={(e) => setComment(e.target.value)}></textarea>
                         </div>
                         <div className='my-3 text-center'>
-                            <button className='btn' onClick={submitHandler}>Submit</button>
+                            <button className='btn' type='submit'>Submit</button>
                         </div>
-                    </div>
+                    </form>
                 </Modal>
             </div>
         </div>

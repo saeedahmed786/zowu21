@@ -33,6 +33,18 @@
     overflow-y: auto;
 }
 
+.post .main .comments-shown::-webkit-scrollbar {
+    background-color: rgba(27, 27, 27, 0.5);
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+
+.post .main .comments-shown::-webkit-scrollbar-thumb {
+    background-color: rgba(204, 198, 198, 0.5);
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+
 .post .main .card-img-overlay .comments-hidden > div {
     padding-top: 400px !important;
     color: white;

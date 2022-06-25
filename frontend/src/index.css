@@ -12,3 +12,7 @@ body {
 .anticon {
   vertical-align: text-top !important;
 }
+
+button:focus {
+  box-shadow: none !important;
+}
